@@ -2,15 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>민기 인력</title>
+<th:block th:replace="~{fragments/external_file :: cdn_block}"></th:block>
 <link rel="stylesheet" th:href="@{/css/header.css}" />
 <link rel="stylesheet" th:href="@{/css/footer.css}" />
 <link rel="stylesheet" th:href="@{/css/main_page.css}"/>
-<style>
+<style type="text/css">
 </style>
+<script type="text/javascript">
+</script>
 </head>
 <body>
+<header>
 <div th:replace="~{fragments/header :: header}"></div>
+</header>
+<main>
 <div class="main-container">
 	<!-- 히어로 섹션 -->
 	<section class="hero-section">
@@ -42,6 +48,9 @@
 		</div>
 	</div>
 </div>
+</main>
+<footer>
 <div th:replace="~{fragments/footer :: footer}"></div>
+</footer>
 </body>
 </html>
