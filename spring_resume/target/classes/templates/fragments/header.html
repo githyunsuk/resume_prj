@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+</style>
+</head>
+<body>
+<div class="header" th:fragment="header">
+	<div class="header-main">
+		<!-- 왼쪽: 로고 + 네비게이션 -->
+		<div class="header-left">
+			<div class="logo">
+				<img th:src="@{/images/logo.png}" alt="민기인력 로고" />
+			</div>
+			<nav class="nav-menu">
+				<a href="#" class="nav-item active">개발자 채용</a> <a href="#"
+					class="nav-item">이력서</a> <a href="#" class="nav-item">취업 TOOL</a> <a
+					href="#" class="nav-item">고객센터</a>
+			</nav>
+		</div>
+
+		<!-- 오른쪽: 검색창 + 회원가입 + 기업서비스 -->
+		<div class="header-right">
+			<a href="#" class="auth-button">회원가입/로그인</a> <a href="#"
+				class="business-button">기업서비스</a>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/header.css}" />
+<link rel="stylesheet" th:href="@{/css/footer.css}" />
+<link rel="stylesheet" th:href="@{/css/main_page.css}"/>
+<style>
+</style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="main-container">
+	<!-- 히어로 섹션 -->
+	<section class="hero-section">
+		<h1 class="hero-title">개발자 커리어의 시작</h1>
+		<p class="hero-subtitle">전국 최고의 IT 기업들이 당신을 기다리고 있습니다</p>
+		<div class="hero-search">
+			<input type="text" class="hero-search-box"
+				placeholder="어떤 포지션을 찾고 계신가요?" />
+			<button class="hero-search-button">🔍</button>
+		</div>
+	</section>
+
+	<!-- 컨텐츠 카드 -->
+	<div class="content-grid">
+		<div class="content-card">
+			<h3 class="card-title">신입 개발자 채용</h3>
+			<p class="card-description">경험이 없어도 괜찮습니다. 성장 가능성과 열정을 중시하는 기업들을
+				만나보세요.</p>
+		</div>
+		<div class="content-card">
+			<h3 class="card-title">경력직 스카우트</h3>
+			<p class="card-description">당신의 경력과 실력을 인정받을 수 있는 더 좋은 기회를
+				찾아드립니다.</p>
+		</div>
+		<div class="content-card">
+			<h3 class="card-title">원격근무 가능</h3>
+			<p class="card-description">집에서도, 어디서든 일할 수 있는 유연한 근무환경을 제공하는
+				회사들입니다.</p>
+		</div>
+	</div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
