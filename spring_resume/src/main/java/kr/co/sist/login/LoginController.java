@@ -15,7 +15,7 @@ public class LoginController {
   public String goCorpLoginForm() {
     return "login/login_form";
   }
-   
+    
   /**
    * 일반회원 로그인 처리
    * @return
