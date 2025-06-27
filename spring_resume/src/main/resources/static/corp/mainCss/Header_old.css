@@ -4,7 +4,6 @@
 #corp-header {
 	max-width: 1200px;
 	margin: 0 auto;
-	position: relative; /* 서브메뉴 absolute 포지셔닝을 위해 추가 */
 }
 
 .corp-main-menu {
@@ -16,9 +15,7 @@
   color: #ecf0f1; /* 글자색을 연한 회색으로 지정 */
   font-weight: 600; /* 글자 굵기 */
   font-size: 15px; /* 글자 크기 */
-  user-select: none; /* 사용자가 텍스트 드래그해서 선택하지 못하게 함*/
-  position: relative; /* z-index 적용을 위해 추가 */
-  z-index: 1000; /* 다른 요소들보다 위에 표시 */
+  user-select: none; /* 사용자가 텍스트 드래그해서 선택하지 못하게 함 */
 }
 
 .corp-main-menu td {
@@ -60,43 +57,23 @@
   color: #2c3e50;
 }
 
-/* 기업 하위 메뉴 스타일 - 오버레이로 변경 */
+/* 기업 하위 메뉴 스타일 */
 .corp-submenu-table {
   display: none; /* 기본 상태는 숨김 */
-  position: absolute; /* 절대 위치로 변경 */
-  top: 100%; /* 메인 메뉴 바로 아래 위치 */
-  left: 0; /* 왼쪽 정렬 */
   width: 100%; /* 너비 100% */
   table-layout: fixed; /* 칼럼 너비 균등 분배 */
-  background: rgba(240, 240, 240, 0.8); /* 반투명 배경색 */
-  backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  -webkit-backdrop-filter: blur(5px); /* Safari 지원 */
+  background: #ecf0f1; /* 밝은 배경색 */
   text-align: center; /* 텍스트 중앙 정렬 */
   border-top: 2px solid #1abc9c; /* 위쪽에 두꺼운 민트색 선 추가 */
   color: #2c3e50; /* 글자색 진한 네이비 */
   font-weight: 500; /* 글자 굵기 약간 낮음 */
   font-size: 13px; /* 글자 크기 작음 */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  z-index: 999; /* 메인 메뉴보다 약간 아래 */
-  animation: slideDown 0.3s ease-out; /* 슬라이드 다운 애니메이션 */
-}
-
-/* 서브메뉴 슬라이드 다운 애니메이션 */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .corp-submenu-table td {
   padding: 15px 20px; /* 셀 안쪽 여백 */
   vertical-align: top; /* 셀 내 내용 위쪽 정렬 */
-  border-right: 1px solid rgba(189, 195, 199, 0.7); /* 오른쪽에 반투명 연한 회색 선 */
+  border-right: 1px solid #bdc3c7; /* 오른쪽에 연한 회색 선 */
   cursor: default; /* 기본 커서 (포인터 X) */
   line-height: 1.5em; /* 줄간격 약간 넉넉히 */
 }
@@ -126,54 +103,30 @@
 /* 마우스를 올렸을 때 해당 글자만 확대되고 색상 및 배경 변화 */
 .corp-submenu-link:hover {
   transform: scale(1.2); /* 20% 크기 확대 */
-  background-color: rgba(26, 188, 156, 0.2); /* 반투명 민트색 배경 */
+  /* 색상과 배경 변화는 원하시면 추가하셔도 됩니다. */
   z-index: 10; /* 겹쳐도 위로 나오게 함 */
   position: relative; /* z-index 효과 적용을 위해 필요 */
-}
-
-/* 오버레이 배경 (선택사항 - 더 강한 오버레이 효과를 원할 경우) */
-.corp-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 998;
-}
-
-.corp-overlay.active {
-  display: block;
 }
 
 /* 기업 모바일 메뉴 영역 */
 .corp-mobile-menu {
   display: none; /* 기본적으로 숨김 */
   flex-direction: column; /* 세로 방향 정렬 */
-  background: rgba(52, 73, 94, 0.95); /* 반투명 어두운 네이비 배경 */
-  backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  -webkit-backdrop-filter: blur(5px); /* Safari 지원 */
+  background: #34495e; /* 어두운 네이비 배경 */
   border-top: 1px solid #1abc9c; /* 상단에 민트색 경계선 */
-  position: absolute; /* 절대 위치 */
-  top: 100%; /* 메인 메뉴 아래 */
-  left: 0;
-  width: 100%;
-  z-index: 999;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .corp-mobile-menu a {
   padding: 12px 20px; /* 링크 주변 여백 */
   text-decoration: none; /* 링크 밑줄 제거 */
   color: #ecf0f1; /* 연한 회색 글자 */
-  border-bottom: 1px solid rgba(44, 62, 80, 0.7); /* 반투명 하단 경계선 */
+  border-bottom: 1px solid #2c3e50; /* 하단 경계선 */
   font-weight: 600; /* 글자 굵기 */
   transition: background-color 0.3s ease; /* 배경색 부드럽게 변화 */
 }
 
 .corp-mobile-menu a:hover {
-  background-color: rgba(26, 188, 156, 0.8); /* 반투명 민트색 배경 */
+  background-color: #1abc9c; /* 마우스 올리면 민트색 배경 */
   color: white; /* 글자색 흰색 */
 }
 
@@ -183,7 +136,6 @@
   font-size: 28px; /* 크기 */
   color: #2c3e50; /* 색상 */
   user-select: none; /* 드래그 선택 방지 */
-  cursor: pointer; /* 클릭 가능하도록 */
 }
 
 /* 화면 너비 768px 이하일 때 반응형 적용 */

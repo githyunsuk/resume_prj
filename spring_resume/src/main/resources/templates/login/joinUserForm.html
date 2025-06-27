@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>일반회원 가입 페이지</title>
+<th:block th:replace="~{fragments/external_file :: cdn_block}"></th:block>
+<link rel="stylesheet" th:href="@{/login/joinUserForm.css}">
+<style>
+    
+</style>
+<script type="text/javascript">
+$(function(){
+	
+}); //ready
+</script>
+</head>
+<body>
+ <div class="header">
+        <div class="header-content">
+            <a th:href="@{/}"> <img th:src="@{/images/logo.png}" class="logo" style="width: 100px; height: 50px;"></a>
+            <a th:href="@{/login}" class="login-link">로그인</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="form-title">민기인력 개인회원 가입</h1>
+        
+        <form>
+            <div class="form-group">
+                <label class="form-label">아이디</label>
+                <input type="text" name="username" class="form-input" placeholder="4~20자(영어/숫자, 2자 이상은문자+숫자조합">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">비밀번호</label>
+                <input type="password" name="password" class="form-input" placeholder="8~16자(영문 대소문자/숫자/특수문자, 3가지 이상은필수조합)">
+            </div>
+
+            <div class="form-group">
+            	<label class="form-label">휴대폰</label>
+            	<input type="text" name="phone" class="form-input" placeholder="'-'만 빼고 숫자만 입력">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">이메일</label>
+                <div class="email-container">
+	                <input type="email" class="form-input" placeholder="name@mingihire.co.kr">
+	                <button type="button" id="codeBtn" class="btn btn-success btn-sm" disabled>인증번호</button>
+                </div>
+                <div id="timer" style="margin-top: 5px; color: red; font-weight: bold;"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">이름</label>
+                <input type="name" class="form-input" placeholder="이름입력">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">생년월일</label>
+                <input type="birth" class="form-input" placeholder="YYYYMMDD">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">약관</label>
+                <div class="terms-section">
+                    <div class="checkbox-group">
+                        <div class="checkbox-item required-checkbox">
+                            <input type="checkbox" class="checkbox-input" id="terms1">
+                            <label for="terms1" class="checkbox-label"><strong>전체 동의</strong></label>
+                        </div>
+                        <div class="checkbox-item">
+                        		<div class="terms-title">
+	                            <input type="checkbox" class="checkbox-input" id="terms2">
+	                            <label for="terms2" class="checkbox-label"><strong>(필수) 개인회원 약관에 동의</strong></label>
+                        		</div>
+                       			<div class="terms-detail-emoji">
+                        		>
+                        		</div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input" id="terms3">
+                            <label for="terms3" class="checkbox-label"><strong>(필수) 개인정보 수집 및 이용에 동의</strong></label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input" id="terms4">
+                            <label for="terms4" class="checkbox-label">(선택) 위치기반서비스 이용동의에 동의</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input" id="terms5">
+                            <label for="terms5" class="checkbox-label">(선택) 마케팅 정보 수신 동의 · 이메일</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input" id="terms6">
+                            <label for="terms6" class="checkbox-label">(선택) 마케팅 정보 수신 동의 · SMS/MMS</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="submitBtn" class="submit-btn" disalbed>다음단계</button>
+        </form>
+    </div>
+
+    <script>
+        // 전체 동의 체크박스 기능
+        document.getElementById('terms1').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.checkbox-input:not(#terms1)');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // 개별 체크박스 변경 시 전체 동의 상태 업데이트
+        document.querySelectorAll('.checkbox-input:not(#terms1)').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const allCheckboxes = document.querySelectorAll('.checkbox-input:not(#terms1)');
+                const checkedBoxes = document.querySelectorAll('.checkbox-input:not(#terms1):checked');
+                document.getElementById('terms1').checked = allCheckboxes.length === checkedBoxes.length;
+            });
+        });
+
+        // 폼 제출 처리
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('회원가입 양식이 제출되었습니다!');
+        });
+    </script>
+</body>
+</html>

@@ -54,6 +54,22 @@ public class LoginController {
     return "corp/main_page";
   }
   
+  /**
+   * 일반회원 가입 페이지로 이동
+   * @return
+   */
+  @GetMapping("/user/join")
+  public String goJoinUserForm() {
+    return "login/joinUserForm";
+  }
   
+  /**
+   * 기업회원 가입 페이지로 이동
+   * @return
+   */
+  @GetMapping("/corp/join")
+  public String goJoinCorpForm() {
+    return "login/joinCorpForm";
+  }
   
 }
