@@ -210,3 +210,15 @@ body {
 .email-container button {
   flex: 2;
 }
+
+.checkbox-item {
+	display:flex;
+	gap: 8px;
+}
+
+.checkbox-item .terms-title {
+	flex: 9.9;
+}
+.checkbox-item .terms-detail-emoji {
+	flex: 0.1;
+} 

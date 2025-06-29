@@ -37,6 +37,18 @@ $(function(){
 	});
 	
 });
+
+/* 일반유저, 기업유저 회원가입 페이지 이동 */
+function joinPageForm(){
+	let url = '/user/join';
+	if($(".corp-type").hasClass("active")){
+		url = '/corp/join';
+	}
+	location.href=url;
+}
+
+
+
 </script>
 </head>
 <body>
@@ -87,7 +99,7 @@ $(function(){
 			<span>|</span> 
 			<a href="#" onclick="alert('비밀번호 찾기 기능')">비밀번호 찾기</a>
 			<span>|</span> 
-			<a href="#" onclick="alert('회원가입 기능')">회원가입</a>
+			<a href="#" onclick="joinPageForm()">회원가입</a>
 		</div>
 
 		<div class="social-login">
