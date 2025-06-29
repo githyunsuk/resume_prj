@@ -15,4 +15,9 @@ public class ToolsController {
 	public String salaryCalculator() {
 		return "/user/tools/salary_calculator";
 	}
+	
+	@GetMapping("/user/tools/unemp_calculator")
+	public String severanceCalculator() {
+		return "/user/tools/unemp_calculator";
+	}
 }
