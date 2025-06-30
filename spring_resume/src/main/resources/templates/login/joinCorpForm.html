@@ -11,7 +11,227 @@
 <script type="text/javascript">
 $(function(){
 	
+	uploadFile();
+	
+	//모달 골라 보기 호출
+	showTheModal(); 
+
+	// 전체 동의 체크박스 기능
+	document.getElementById('terms1').addEventListener('change', function() {
+	    const checkboxes = document.querySelectorAll('.checkbox-input:not(#terms1)');
+	    checkboxes.forEach(checkbox => {
+	        checkbox.checked = this.checked;
+	    });
+	});
+
+	// 개별 체크박스 변경 시 전체 동의 상태 업데이트
+	document.querySelectorAll('.checkbox-input:not(#terms1)').forEach(checkbox => {
+	    checkbox.addEventListener('change', function() {
+	        const allCheckboxes = document.querySelectorAll('.checkbox-input:not(#terms1)');
+	        const checkedBoxes = document.querySelectorAll('.checkbox-input:not(#terms1):checked');
+	        document.getElementById('terms1').checked = allCheckboxes.length === checkedBoxes.length;
+	    });
+	});
+
+	// 폼 제출 처리
+	document.querySelector('form').addEventListener('submit', function(e) {
+	    e.preventDefault();
+	    //예외처리 검사 함수 호출
+	    if(validateForm()){
+		    alert('회원가입 양식이 제출되었습니다!');
+		    //this.submit();
+	    }
+	    
+	});
+
+	//폼 예외처리 검사
+	function validateForm(){
+		let flag = true;
+
+		
+		//약관 - 필수 항목 체크 여부 확인
+		let termFlag = true;
+		document.querySelectorAll('.checkbox-input.required').forEach(checkbox => {
+			if(!checkbox.checked){
+				termFlag = false;
+			}
+		});
+		if(!termFlag){
+			alert('필수 약관에 동의해주세요.');
+			flag = false;			
+		}
+		
+		
+		
+		return flag;
+	}//validateForm()
+
+
+	//인증번호 처리, 인증요청 버튼을 클릭시 (180초하자)
+	document.getElementById('codeBtn').addEventListener('click', function(){
+		alert("디버깅모드로 5초만 유지합니다.");
+		//인증번호 입력칸& 확인버튼 표시
+		document.getElementById('confirmNumberFrm').style.display='block';
+		//display를 none → block으로 바꾸면 기존 flex 속성은 사라집니다. 따라서 다시 설정해줘야합니다.
+		document.getElementById('confirmNumberFrm').style.display='flex';
+		//확인버튼은 6개 숫자일 경우에만 감지하여 확인버튼을 활성화 
+		document.getElementById('confirmNumber').addEventListener('input', function(e){
+			let length = this.value.length;
+			const btn = document.getElementById('confirmBtn');
+			if(length == 6){
+				btn.disabled = false;
+			} else {
+				btn.disabled = true;
+			}
+		})
+		//보냈으므로 인증요청 버튼의 텍스트를 재전송으로 변경
+		document.getElementById('codeBtn').textContent='재전송'; 
+		//타이머 시작
+		startTimer(5, $("#timer"));
+		document.getElementById('remainTime').style.display='block'; //남은 인증시간 표시, 만료시 숨김으로 해놨으므로 재전송시 필요
+		document.getElementById('verification-error').style.display='none';  //인증시간 만료 표시 숨김, 재전송시 필요
+		//
+		
+	});
+
+
+
+	//이메일 인증번호 확인버튼에 이벤트리스너 등록 (참조만 넘기는거에 주의, ..() x)
+	document.getElementById('confirmBtn').addEventListener('click', checkConfirmNumber); 
+
+	
 }); //ready
+
+//파일선택 버튼 누르고, 업로드 파일 확장자명을 검증 후, 업로드파일 이름 표시
+function uploadFile(){
+	//파일선택 버튼 누르면, file input을 누른것처럼 작동
+	document.getElementById("select_certification_file").addEventListener("click", function(){
+		document.getElementById("upfile").click();
+	});
+	
+	//파일이 선택됐을 때 동작
+	document.getElementById('upfile').addEventListener("change", function(){
+		const fileInput = document.getElementById('upfile');
+		const file = fileInput.files[0];
+		
+		if(file){
+			const fileName = file.name;
+			const allowedExtention = ['jpg','jpeg','png','pdf'];
+			
+			//확장자 추출
+			const ext = fileName.split('.').pop().toLowerCase(); //pop() ->배열의 마지막 요소
+			console.log(fileName + " / " + ext);
+			
+			//확장자 검증
+			if(allowedExtention.includes(ext)){
+				document.getElementById('file-name').textContent = `선택된 파일: ${fileName}`;
+				document.getElementById('upload-img-box').style.display = "block";
+			} else {
+				alert('jpg, jpeg, png, pdf 파일 형식만 허용됩니다.');
+				fileInput.value = ""; //선택된 파일 초기화
+				document.getElementById('upload-img-box').style.display = "none";
+				document.getElementById('file-name').textContent = "";
+			}
+			//또 다른 예외처리 ~
+			
+		}
+		
+	});
+
+	
+}
+
+
+//확인버튼 이벤트리스너에 등록될 인증번호확인 함수
+function checkConfirmNumber(){
+//확인버튼 클릭시 인증번호가 일치하지 않을 때 (예시로 123456으로 해놨음. 수정하자~)
+if(document.getElementById('confirmNumber').value != 123456){
+	document.getElementById('remainTime').style.display='none'; //남은 인증시간 숨기고,
+	document.getElementById('verification-error').textContent='인증번호가 일치하지않습니다. 다시 입력해주세요.'  //에러 텍스트 수정하고,
+	document.getElementById('verification-error').style.display='block';  //에러 텍스트 표시
+} else {
+	//인증에 성공할 때
+	alert('인증번호가 일치합니다.');
+	//타이머종료
+	clearInterval(timerInterval);
+	
+	document.getElementById('remainTime').style.display='none'; //남은 인증시간 숨기고,
+	document.getElementById('verification-success').style.display='block';  //성공 텍스트 표시
+	document.getElementById('confirmBtn').disabled = true; //맞으니까 이제 확인버튼 막아
+	document.getElementById('codeBtn').disabled = true; //맞으니까 이제 재전송버튼도 막아
+	document.getElementById('confirmNumber').readOnly = true; //번호입력창도 막아
+	
+	document.getElementById('verification-error').style.display = 'none'; //혹시나해서 
+	
+	return;
+}
+}
+
+//모달창 골라 열기 
+function showTheModal(){
+// 약관 버튼 클릭 시 직접 모달 내용 변경
+document.querySelectorAll('.term-btn').forEach(btn => {
+	btn.addEventListener('click', function(e){
+		// 클릭된 버튼의 data-term 속성 가져오기
+		const selectedTerm = this.getAttribute('data-term');
+		//console.log('선택된 약관:', selectedTerm);
+		
+		//모든 term fragment를 숨기기 			
+		document.querySelectorAll('.term-fragment').forEach(div => {
+			div.style.display = 'none';
+		});
+		
+		//선택하 항목만 표시
+		const target = document.getElementById(selectedTerm);
+		if(target){
+			target.style.display = 'block';
+		}
+		
+	});
+});
+} //showTheModal()
+
+
+//------- 타이머 함수 ---------
+let timerInterval; // 🔸 전역으로 선언해야 기존 타이머 clear 가능
+
+function startTimer(duration, display) {
+let timer = duration;
+let minutes, seconds;
+
+// 기존 타이머가 있다면 정리
+clearInterval(timerInterval);
+
+timerInterval = setInterval(function() {
+    minutes = parseInt(timer / 60, 10);
+    seconds = parseInt(timer % 60, 10);
+    
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+    display.text(minutes + ":" + seconds);
+    
+    //인증시간 만료시
+    if (--timer < 0) {
+        clearInterval(timerInterval);
+        document.getElementById('remainTime').style.display='none';
+        //display.text("00:00");
+        $("#verification-error").show();
+        $("#verification-error").text("인증 시간이 만료되었습니다. 다시 시도해주세요.");
+        
+        // 만료됐으므로 세션의 인증코드 번호 삭제 
+        $.ajax({
+            url : "",
+            type : "POST"
+        });
+        
+        //만료됐으므로 확인버튼의 이벤트리스너 삭제
+        document.getElementById('confirmBtn').removeEventListener('click', checkConfirmNumber);
+    }
+}, 1000);
+
+}
+
 </script>
 </head>
 <body>
@@ -30,6 +250,7 @@ $(function(){
                 <label class="form-label" style="font-weight: bold;">사업자등록번호</label>
                 <input type="text" name="corpNo" class="form-input" placeholder="사업자 등록번호 직접 입력(10자리)">
                 <script type="text/javascript">
+                let corpNo;
                 	if(corpNo == false){
                 		alert("폐업 처리된 사업자번호입니다. 회원가입을 진행할 수 없습니다.");
                 	}
@@ -48,12 +269,26 @@ $(function(){
             </div>
             
             <div class="form-group">
-                <label class="form-label">기업인증</label>
-                <input type="text" name="username" class="form-input" placeholder="4~20자(영어/숫자, 2자 이상은문자+숫자조합">
+            	<div class="form-label" style="font-weight: bold;">기업인증</div>
+                <div class="upload-file-container">
+	                <input type="file" id="upfile" name="upfile" style="display: none">
+	                <div class="upload-img-box" id="upload-img-box" style="display: none">
+		                <div class="upload-img-box-svg">
+			                <svg xmlns="http://www.w3.org/2000/svg" width="150px" height="250px" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
+											  <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+											  <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+											</svg>
+		                </div>
+	                </div>
+	                <div class="upload-btn-box">
+		                <div type="text" id="file-name" ></div>      
+		                <button type="button" class="btn btn-primary btn-sm"  id="select_certification_file">파일 선택</button>
+	                </div>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label">기업명</label>
-                <input type="text" name="username" class="form-input" placeholder="기업명 입력(사업자등록증명원 기업명))">
+                <input type="text" name="username" class="form-input" placeholder="4~20자(영어/숫자, 2자 이상은문자+숫자조합">
             </div>
             <div class="form-group">
                 <label class="form-label">대표자</label>
@@ -66,17 +301,37 @@ $(function(){
                 <input type="text" name="username" class="form-input" placeholder="상세주소">
             </div>
             <div class="form-group">
-                <label class="form-label">업종</label>
-                <input type="text" name="username" class="form-input" placeholder="업종선택" readonly>
-                <input type="button" name="username" class="btn btn-primary" value="선택">
+	            <label class="form-label">업종</label>
+	            <select name="industry" id="industry" class="form-select">
+						    <option value="">-- 업종 선택 --</option>
+							  <option value="manufacturing">제조업</option>
+							  <option value="construction">건설업</option>
+							  <option value="it_communications">정보통신업 (IT)</option>
+							  <option value="wholesale_retail">도소매업</option>
+							  <option value="transportation">운수업</option>
+							  <option value="real_estate">부동산업</option>
+							  <option value="finance_insurance">금융 및 보험업</option>
+							  <option value="education">교육 서비스업</option>
+							  <option value="health_social">보건 및 사회복지 서비스업</option>
+							  <option value="hospitality_food">숙박 및 음식점업</option>
+							  <option value="arts_sports_leisure">예술, 스포츠 및 여가관련 서비스업</option>
+							  <option value="agriculture_fishing">농업, 임업 및 어업</option>
+							  <option value="utilities">전기, 가스, 증기 및 수도사업</option>
+							  <option value="public_admin_defense">공공행정 및 국방</option>
+							  <option value="international_orgs">국제 및 외국기관</option>
+							</select>
             </div>
             <div class="form-group">
                 <label class="form-label">개업일</label>
                 <input type="text" name="username" class="form-input" placeholder="개업일 입력(YYYYMMDD)">
             </div>
             <div class="form-group">
-                <label class="form-label">담당자 본인 인증 : 이메일로하자 우리는</label>
-                <input type="button" name="username" class="btn btn-primary" value="이메일" >
+                <label class="form-label">평균연봉</label>
+                <input type="text" name="username" class="form-input" placeholder="개업일 입력(YYYYMMDD)">
+            </div>
+            <div class="form-group">
+                <label class="form-label">개업일</label>
+                <input type="text" name="username" class="form-input" placeholder="개업일 입력(YYYYMMDD)">
             </div>
             <div class="form-group">
                 <label class="form-label">아이디</label>
@@ -200,6 +455,9 @@ $(function(){
 			  </div>
 			</div>
     </div>
+
+
+
 
 </body>
 </html>
