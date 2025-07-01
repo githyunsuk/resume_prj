@@ -20,4 +20,9 @@ public class ToolsController {
 	public String severanceCalculator() {
 		return "/user/tools/unemp_calculator";
 	}
+	
+	@GetMapping("/user/tools/image_adjustment")
+	public String imageAdjustment() {
+		return "/user/tools/image_adjustment";
+	}
 }
